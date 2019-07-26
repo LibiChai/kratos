@@ -163,20 +163,20 @@ func (c *Context) Render(code int, r render.Render) {
 
 // JSON serializes the given struct as JSON into the response body.
 // It also sets the Content-Type as "application/json".
+// 兼容1002提示逻辑
 func (c *Context) JSON(data interface{}, err error) {
 	code := http.StatusOK
 	c.Error = err
 	bcode := ecode.Cause(err)
-	// TODO app allow 5xx?
-	/*
-		if bcode.Code() == -500 {
-			code = http.StatusServiceUnavailable
-		}
-	*/
+
 	writeStatusCode(c.Writer, bcode.Code())
+	errMsg := bcode.Message()
+	if(bcode == ecode.RespAlert){
+		errMsg = err.Error()
+	}
 	c.Render(code, render.JSON{
-		Code:    bcode.Code(),
-		Message: bcode.Message(),
+		Status:    bcode.Code(),
+		Error: errMsg,
 		Data:    data,
 	})
 }
@@ -288,8 +288,8 @@ func (c *Context) mustBindWith(obj interface{}, b binding.Binding) (err error) {
 	if err = b.Bind(c.Request, obj); err != nil {
 		c.Error = ecode.RequestErr
 		c.Render(http.StatusOK, render.JSON{
-			Code:    ecode.RequestErr.Code(),
-			Message: err.Error(),
+			Status:    ecode.RequestErr.Code(),
+			Error: err.Error(),
 			Data:    nil,
 		})
 		c.Abort()

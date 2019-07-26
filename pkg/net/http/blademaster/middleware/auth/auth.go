@@ -123,7 +123,7 @@ func (a *Auth) midAuth(ctx *bm.Context, auth authFunc) {
 		ctx.Abort()
 		return
 	}
-	setMid(ctx, mid)
+	setUid(ctx, mid)
 }
 
 func (a *Auth) guestAuth(ctx *bm.Context, auth authFunc) {
@@ -144,10 +144,10 @@ func (a *Auth) guestAuth(ctx *bm.Context, auth authFunc) {
 
 // set mid into context
 // NOTE: This method is not thread safe.
-func setMid(ctx *bm.Context, mid int64) {
-	ctx.Set(metadata.Mid, mid)
+func setUid(ctx *bm.Context, mid int64) {
+	ctx.Set(metadata.Uid, mid)
 	if md, ok := metadata.FromContext(ctx); ok {
-		md[metadata.Mid] = mid
+		md[metadata.Uid] = mid
 		return
 	}
 }

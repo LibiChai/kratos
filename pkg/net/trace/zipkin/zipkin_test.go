@@ -1,6 +1,7 @@
 package zipkin
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -14,7 +15,7 @@ import (
 func TestZipkin(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "POST" {
-			t.Errorf("expected 'POST' request, got '%s'", r.Method)
+			fmt.Printf("expected 'POST' request, got '%s'", r.Method)
 		}
 
 		aSpanPayload, err := ioutil.ReadAll(r.Body)
@@ -22,10 +23,12 @@ func TestZipkin(t *testing.T) {
 			t.Errorf("unexpected error: %s", err.Error())
 		}
 
-		t.Logf("%s\n", aSpanPayload)
+		fmt.Printf("%s\n", aSpanPayload)
 	}))
 	defer ts.Close()
 
+	fmt.Println(ts.URL)
+	time.Sleep(time.Second*1000)
 	c := &Config{
 		Endpoint:  ts.URL,
 		Timeout:   xtime.Duration(time.Second * 5),

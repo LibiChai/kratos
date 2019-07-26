@@ -4,6 +4,9 @@ package ecode
 var (
 	OK = add(0) // 正确
 
+	RespSuccess       = add(1001) //正常返回
+	RespAlert		  = add(1002)  //提示
+
 	NotModified        = add(-304) // 木有改动
 	TemporaryRedirect  = add(-307) // 撞车跳转
 	RequestErr         = add(-400) // 请求错误

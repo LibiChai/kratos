@@ -52,6 +52,9 @@ type Codes interface {
 type Code int
 
 func (e Code) Error() string {
+	if(e == OK || e == RespSuccess){
+		return ""
+	}
 	return strconv.FormatInt(int64(e), 10)
 }
 
@@ -68,6 +71,7 @@ func (e Code) Message() string {
 	return e.Error()
 }
 
+
 // Details return details.
 func (e Code) Details() []interface{} { return nil }
 
@@ -81,12 +85,12 @@ func Int(i int) Code { return Code(i) }
 // String parse code string to error.
 func String(e string) Code {
 	if e == "" {
-		return OK
+		return RespSuccess
 	}
 	// try error string
 	i, err := strconv.Atoi(e)
 	if err != nil {
-		return ServerErr
+		return RespAlert
 	}
 	return Code(i)
 }
@@ -94,7 +98,7 @@ func String(e string) Code {
 // Cause cause from error to ecode.
 func Cause(e error) Codes {
 	if e == nil {
-		return OK
+		return RespSuccess
 	}
 	ec, ok := errors.Cause(e).(Codes)
 	if ok {

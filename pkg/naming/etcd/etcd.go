@@ -307,6 +307,7 @@ func (r *Resolve) Fetch(ctx context.Context) (ins *naming.InstancesInfo, ok bool
 	app, ok := r.e.apps[r.id]
 	r.e.mutex.RUnlock()
 	if ok {
+
 		ins, ok = app.ins.Load().(*naming.InstancesInfo)
 		return
 	}
