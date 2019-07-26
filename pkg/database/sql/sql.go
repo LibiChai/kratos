@@ -214,9 +214,9 @@ func (db *DB) QueryRow(c context.Context, query string, args ...interface{}) *Ro
 }
 
 // QueryString 查询某条记录的某个字段
-func (db *DB)QueryString(c context.Context,query string,args ...interface{}) (ret string,err error){
-	if err := db.QueryRow(c,query,args...).Scan(&ret);err != nil{
-		return "",err
+func (db *DB) QueryString(c context.Context, query string, args ...interface{}) (ret string, err error) {
+	if err := db.QueryRow(c, query, args...).Scan(&ret); err != nil {
+		return "", err
 	}
 	return
 }

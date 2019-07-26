@@ -28,7 +28,7 @@ func TestZipkin(t *testing.T) {
 	defer ts.Close()
 
 	fmt.Println(ts.URL)
-	time.Sleep(time.Second*1000)
+	time.Sleep(time.Second * 1000)
 	c := &Config{
 		Endpoint:  ts.URL,
 		Timeout:   xtime.Duration(time.Second * 5),

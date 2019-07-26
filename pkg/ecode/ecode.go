@@ -52,7 +52,7 @@ type Codes interface {
 type Code int
 
 func (e Code) Error() string {
-	if(e == OK || e == RespSuccess){
+	if e == OK || e == RespSuccess {
 		return ""
 	}
 	return strconv.FormatInt(int64(e), 10)
@@ -70,7 +70,6 @@ func (e Code) Message() string {
 	}
 	return e.Error()
 }
-
 
 // Details return details.
 func (e Code) Details() []interface{} { return nil }

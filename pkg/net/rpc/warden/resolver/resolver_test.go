@@ -71,7 +71,7 @@ func Test_FilterNone(t *testing.T) {
 		quit:       make(chan struct{}, 1),
 		zone:       "sh1",
 		subsetSize: 50,
-		clusters:   map[string]struct{}{"c2": struct{}{}},
+		clusters:   map[string]struct{}{"c2": {}},
 	}
 
 	if len(r.filter(backs)) != 0 {
@@ -107,7 +107,7 @@ func Test_FilterSome(t *testing.T) {
 		quit:       make(chan struct{}, 1),
 		zone:       "sh1",
 		subsetSize: 50,
-		clusters:   map[string]struct{}{"c2": struct{}{}},
+		clusters:   map[string]struct{}{"c2": {}},
 	}
 	if len(r.filter(backs)) != 50 {
 		t.Fatalf("backends length must be 0")
@@ -117,7 +117,7 @@ func Test_FilterSome(t *testing.T) {
 		quit:       make(chan struct{}, 1),
 		zone:       "sh1",
 		subsetSize: 50,
-		clusters:   map[string]struct{}{"c1": struct{}{}},
+		clusters:   map[string]struct{}{"c1": {}},
 	}
 	if len(r2.filter(backs)) != 40 {
 		t.Fatalf("backends length must be 0")

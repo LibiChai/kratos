@@ -11,9 +11,9 @@ var jsonContentType = []string{"application/json; charset=utf-8"}
 
 // JSON common json struct.
 type JSON struct {
-	Status    int         `json:"status"`
-	Error string      `json:"error"`
-	Data    interface{} `json:"data,omitempty"`
+	Status int         `json:"status"`
+	Error  string      `json:"error"`
+	Data   interface{} `json:"data,omitempty"`
 }
 
 func writeJSON(w http.ResponseWriter, obj interface{}) (err error) {

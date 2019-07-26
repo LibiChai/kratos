@@ -49,7 +49,6 @@ type Context struct {
 	RoutePath string
 
 	Params Params
-
 }
 
 /************************************/
@@ -66,7 +65,6 @@ func (c *Context) Next() {
 		c.index++
 	}
 }
-
 
 // Abort prevents pending handlers from being called. Note that this will not stop the current handler.
 // Let's say you have an authorization middleware that validates that the current request is authorized.
@@ -171,13 +169,13 @@ func (c *Context) JSON(data interface{}, err error) {
 
 	writeStatusCode(c.Writer, bcode.Code())
 	errMsg := bcode.Message()
-	if(bcode == ecode.RespAlert){
+	if bcode == ecode.RespAlert {
 		errMsg = err.Error()
 	}
 	c.Render(code, render.JSON{
-		Status:    bcode.Code(),
-		Error: errMsg,
-		Data:    data,
+		Status: bcode.Code(),
+		Error:  errMsg,
+		Data:   data,
 	})
 }
 
@@ -288,9 +286,9 @@ func (c *Context) mustBindWith(obj interface{}, b binding.Binding) (err error) {
 	if err = b.Bind(c.Request, obj); err != nil {
 		c.Error = ecode.RequestErr
 		c.Render(http.StatusOK, render.JSON{
-			Status:    ecode.RequestErr.Code(),
-			Error: err.Error(),
-			Data:    nil,
+			Status: ecode.RequestErr.Code(),
+			Error:  err.Error(),
+			Data:   nil,
 		})
 		c.Abort()
 	}

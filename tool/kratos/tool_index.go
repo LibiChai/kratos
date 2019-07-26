@@ -3,7 +3,7 @@ package main
 import "time"
 
 var toolIndexs = []*Tool{
-	&Tool{
+	{
 		Name:      "kratos",
 		Alias:     "kratos",
 		BuildTime: time.Date(2019, 6, 21, 0, 0, 0, 0, time.Local),
@@ -12,7 +12,7 @@ var toolIndexs = []*Tool{
 		Platform:  []string{"darwin", "linux", "windows"},
 		Author:    "kratos",
 	},
-	&Tool{
+	{
 		Name:      "protoc",
 		Alias:     "kratos-protoc",
 		BuildTime: time.Date(2019, 6, 21, 0, 0, 0, 0, time.Local),
@@ -21,7 +21,7 @@ var toolIndexs = []*Tool{
 		Platform:  []string{"darwin", "linux", "windows"},
 		Author:    "kratos",
 	},
-	&Tool{
+	{
 		Name:      "swagger",
 		Alias:     "swagger",
 		BuildTime: time.Date(2019, 5, 5, 0, 0, 0, 0, time.Local),
@@ -30,7 +30,7 @@ var toolIndexs = []*Tool{
 		Platform:  []string{"darwin", "linux", "windows"},
 		Author:    "goswagger.io",
 	},
-	&Tool{
+	{
 		Name:      "genbts",
 		Alias:     "kratos-gen-bts",
 		BuildTime: time.Date(2019, 7, 20, 0, 0, 0, 0, time.Local),
@@ -39,7 +39,7 @@ var toolIndexs = []*Tool{
 		Platform:  []string{"darwin", "linux", "windows"},
 		Author:    "kratos",
 	},
-	&Tool{
+	{
 		Name:      "genmc",
 		Alias:     "kratos-gen-mc",
 		BuildTime: time.Date(2019, 7, 20, 0, 0, 0, 0, time.Local),

@@ -31,18 +31,18 @@ func (d *Dao) AddCacheDemos(c context.Context, values map[int64]*Demo) error {
 
 // CacheDemos1 .
 func (d *Dao) CacheDemos1(c context.Context, keys []int64) (map[int64]*Demo, error) {
-    // get data from cache
-    return _multiCacheFunc(c, keys)
+	// get data from cache
+	return _multiCacheFunc(c, keys)
 }
 
 // RawDemos .
 func (d *Dao) RawDemos1(c context.Context, keys []int64) (map[int64]*Demo, error) {
-    // get data from db
-    return _multiRawFunc(c, keys)
+	// get data from db
+	return _multiRawFunc(c, keys)
 }
 
 // AddCacheDemos .
 func (d *Dao) AddCacheDemos1(c context.Context, values map[int64]*Demo) error {
-    // add to cache
-    return _multiAddCacheFunc(c, values)
+	// add to cache
+	return _multiAddCacheFunc(c, values)
 }

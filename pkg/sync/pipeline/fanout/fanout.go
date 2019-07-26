@@ -15,8 +15,8 @@ var (
 	// ErrFull chan full.
 	ErrFull   = errors.New("fanout: chan full")
 	traceTags = []trace.Tag{
-		trace.Tag{Key: trace.TagSpanKind, Value: "background"},
-		trace.Tag{Key: trace.TagComponent, Value: "sync/pipeline/fanout"},
+		{Key: trace.TagSpanKind, Value: "background"},
+		{Key: trace.TagComponent, Value: "sync/pipeline/fanout"},
 	}
 )
 

@@ -611,7 +611,7 @@ func (d *Discovery) broadcast(apps map[string]*naming.InstancesInfo) {
 	for appID, v := range apps {
 		var count int
 		// v maybe nil in old version(less than v1.1) discovery,check incase of panic
-		if v==nil {
+		if v == nil {
 			continue
 		}
 		for zone, ins := range v.Instances {

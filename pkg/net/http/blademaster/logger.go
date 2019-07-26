@@ -34,7 +34,7 @@ func Logger() HandlerFunc {
 			caller = noUser
 		}
 
-		uid := metadata.Int64(c,metadata.Uid)
+		uid := metadata.Int64(c, metadata.Uid)
 
 		_metricServerReqCodeTotal.Inc(c.RoutePath[1:], caller, strconv.FormatInt(int64(cerr.Code()), 10))
 		_metricServerReqDur.Observe(int64(dt/time.Millisecond), c.RoutePath[1:], caller)
@@ -57,7 +57,7 @@ func Logger() HandlerFunc {
 			log.KVString("method", req.Method),
 			log.KVString("ip", ip),
 			log.KVString("user", caller),
-			log.KVInt64("uid",uid),
+			log.KVInt64("uid", uid),
 			log.KVString("path", path),
 			log.KVString("params", params.Encode()),
 			log.KVInt("ret", cerr.Code()),
