@@ -18,10 +18,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/uber/jaeger-client-go/thrift"
+	"github.com/bilibili/kratos/pkg/net/trace/jaeger/thrift"
 
-	j "github.com/uber/jaeger-client-go/thrift-gen/jaeger"
-	"github.com/uber/jaeger-client-go/utils"
+	j "github.com/bilibili/kratos/pkg/net/trace/jaeger/thrift-gen/jaeger"
 )
 
 // Empirically obtained constant for how many bytes in the message are used for envelope.
@@ -35,7 +34,7 @@ const emitBatchOverhead = 30
 var errSpanTooLarge = errors.New("Span is too large")
 
 type udpSender struct {
-	client          *utils.AgentClientUDP
+	client          AgentClientUDP
 	maxPacketSize   int                   // max size of datagram in bytes
 	maxSpanBytes    int                   // max number of bytes to record spans (excluding envelope) in the datagram
 	byteBufferSize  int                   // current number of span bytes accumulated in the buffer
@@ -47,12 +46,13 @@ type udpSender struct {
 }
 
 // NewUDPTransport creates a reporter that submits spans to jaeger-agent
-func NewUDPTransport(hostPort string, maxPacketSize int) (Transport, error) {
+func NewUDPTransport(hostPort string, maxPacketSize int) (*udpSender, error) {
 	if len(hostPort) == 0 {
-		hostPort = fmt.Sprintf("%s:%d", DefaultUDPSpanServerHost, DefaultUDPSpanServerPort)
+		//todo
+		return nil,nil
 	}
 	if maxPacketSize == 0 {
-		maxPacketSize = utils.UDPPacketMaxLength
+		maxPacketSize = UDPPacketMaxLength
 	}
 
 	protocolFactory := thrift.NewTCompactProtocolFactory()
@@ -61,7 +61,7 @@ func NewUDPTransport(hostPort string, maxPacketSize int) (Transport, error) {
 	thriftBuffer := thrift.NewTMemoryBufferLen(maxPacketSize)
 	thriftProtocol := protocolFactory.GetProtocol(thriftBuffer)
 
-	client, err := utils.NewAgentClientUDP(hostPort, maxPacketSize)
+	client, err := NewAgentClientUDP(hostPort, maxPacketSize)
 	if err != nil {
 		return nil, err
 	}
@@ -80,13 +80,15 @@ func (s *udpSender) calcSizeOfSerializedThrift(thriftStruct thrift.TStruct) int 
 	return s.thriftBuffer.Len()
 }
 
-func (s *udpSender) Append(span *Span) (int, error) {
+func (s *udpSender) Append(process *j.Process,jspan *j.Span) (int, error) {
+	fmt.Println(process)
+	fmt.Println(*jspan)
 	if s.process == nil {
-		s.process = BuildJaegerProcessThrift(span)
+		s.process = process
 		s.processByteSize = s.calcSizeOfSerializedThrift(s.process)
 		s.byteBufferSize += s.processByteSize
 	}
-	jSpan := BuildJaegerThrift(span)
+	jSpan := jspan
 	spanSize := s.calcSizeOfSerializedThrift(jSpan)
 	if spanSize > s.maxSpanBytes {
 		return 1, errSpanTooLarge
