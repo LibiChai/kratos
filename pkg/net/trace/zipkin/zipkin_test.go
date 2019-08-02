@@ -13,6 +13,7 @@ import (
 )
 
 func TestZipkin(t *testing.T) {
+
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "POST" {
 			fmt.Printf("expected 'POST' request, got '%s'", r.Method)
@@ -28,9 +29,8 @@ func TestZipkin(t *testing.T) {
 	defer ts.Close()
 
 	fmt.Println(ts.URL)
-	time.Sleep(time.Second * 1000)
 	c := &Config{
-		Endpoint:  ts.URL,
+		Endpoint:  "http://127.0.0.1:9411/api/v2/spans",
 		Timeout:   xtime.Duration(time.Second * 5),
 		BatchSize: 100,
 	}
@@ -40,6 +40,7 @@ func TestZipkin(t *testing.T) {
 	t2 := trace.NewTracer("service2", report, true)
 	sp1 := t1.New("option_1")
 	sp2 := sp1.Fork("service3", "opt_client")
+	sp1.SetLog(trace.Log("log_key","log_val"))
 	// inject
 	header := make(http.Header)
 	t1.Inject(sp2, trace.HTTPFormat, header)
