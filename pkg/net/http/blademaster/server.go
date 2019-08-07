@@ -274,8 +274,7 @@ func (engine *Engine) prepareHandler(c *Context) {
 				continue
 			}
 			if handlers, _, _ := tree.root.getValue(rPath, nil, unescape); handlers != nil {
-				//c.handlers = engine.allNoMethod
-				c.handlers = append(handlers, engine.allNoMethod...)
+				c.handlers = engine.allNoMethod
 				return
 			}
 		}
@@ -384,6 +383,8 @@ func (engine *Engine) UseFunc(middleware ...HandlerFunc) IRoutes {
 // For example, this is the right place for a logger or error management middleware.
 func (engine *Engine) Use(middleware ...Handler) IRoutes {
 	engine.RouterGroup.Use(middleware...)
+	engine.rebuild404Handlers()
+	engine.rebuild405Handlers()
 	return engine
 }
 
