@@ -274,7 +274,8 @@ func (engine *Engine) prepareHandler(c *Context) {
 				continue
 			}
 			if handlers, _, _ := tree.root.getValue(rPath, nil, unescape); handlers != nil {
-				c.handlers = engine.allNoMethod
+				//c.handlers = engine.allNoMethod
+				c.handlers = append(handlers, engine.allNoMethod...)
 				return
 			}
 		}
