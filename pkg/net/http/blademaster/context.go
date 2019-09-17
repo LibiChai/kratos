@@ -299,5 +299,5 @@ func (c *Context) mustBindWith(obj interface{}, b binding.Binding) (err error) {
 
 func writeStatusCode(w http.ResponseWriter, ecode int) {
 	header := w.Header()
-	header.Set("kratos-status-code", strconv.FormatInt(int64(ecode), 10))
+	header.Set("tal-status-code", strconv.FormatInt(int64(ecode), 10))
 }

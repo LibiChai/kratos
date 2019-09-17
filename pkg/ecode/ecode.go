@@ -52,6 +52,9 @@ type Codes interface {
 type Code int
 
 func (e Code) Error() string {
+	if(e == 0){
+		return ""
+	}
 	return strconv.FormatInt(int64(e), 10)
 }
 
