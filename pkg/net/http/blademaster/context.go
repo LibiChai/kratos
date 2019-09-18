@@ -168,11 +168,20 @@ func (c *Context) JSON(data interface{}, err error) {
 	c.Error = err
 	bcode := ecode.Cause(err)
 	// TODO app allow 5xx?
-	/*
-		if bcode.Code() == -500 {
-			code = http.StatusServiceUnavailable
-		}
-	*/
+	if bcode.Code() == -500 {
+		code = http.StatusServiceUnavailable
+	}
+	writeStatusCode(c.Writer, bcode.Code())
+	c.Render(code, render.JSON{
+		Code:    bcode.Code(),
+		Message: bcode.Message(),
+		Data:    data,
+	})
+}
+
+func (c *Context) JSONStatus(data interface{}, err error,code int) {
+	c.Error = err
+	bcode := ecode.Cause(err)
 	writeStatusCode(c.Writer, bcode.Code())
 	c.Render(code, render.JSON{
 		Code:    bcode.Code(),
@@ -208,11 +217,9 @@ func (c *Context) XML(data interface{}, err error) {
 	c.Error = err
 	bcode := ecode.Cause(err)
 	// TODO app allow 5xx?
-	/*
-		if bcode.Code() == -500 {
-			code = http.StatusServiceUnavailable
-		}
-	*/
+	if bcode.Code() == -500 {
+		code = http.StatusServiceUnavailable
+	}
 	writeStatusCode(c.Writer, bcode.Code())
 	c.Render(code, render.XML{
 		Code:    bcode.Code(),
@@ -287,7 +294,7 @@ func (c *Context) Bind(obj interface{}) error {
 func (c *Context) mustBindWith(obj interface{}, b binding.Binding) (err error) {
 	if err = b.Bind(c.Request, obj); err != nil {
 		c.Error = ecode.RequestErr
-		c.Render(http.StatusOK, render.JSON{
+		c.Render(http.StatusBadRequest, render.JSON{
 			Code:    ecode.RequestErr.Code(),
 			Message: err.Error(),
 			Data:    nil,

@@ -17,4 +17,9 @@ var (
 	ServiceUnavailable = add(-503) // 过载保护,服务暂不可用
 	Deadline           = add(-504) // 服务调用超时
 	LimitExceed        = add(-509) // 超出限制
+
+	SignParamErr = add(4001)  //签名参数错误
+	SignTimestampExpire = add(4002) //签名过期
+	SignNonceDuplicate = add(4003) //签名nonce重复
+	SignCheckErr = add(4004) //签名验证失败
 )
