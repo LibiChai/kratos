@@ -167,14 +167,16 @@ func (c *Context) JSON(data interface{}, err error) {
 	code := http.StatusOK
 	c.Error = err
 	bcode := ecode.Cause(err)
+	message := bcode.Message()
 	// TODO app allow 5xx?
 	if bcode.Code() == -500 {
 		code = http.StatusServiceUnavailable
+		message = err.Error()
 	}
 	writeStatusCode(c.Writer, bcode.Code())
 	c.Render(code, render.JSON{
 		Code:    bcode.Code(),
-		Message: bcode.Message(),
+		Message: message,
 		Data:    data,
 	})
 }

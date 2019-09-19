@@ -3,11 +3,11 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": "testOpenApi",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
+        "name": "testOpenApi",
         "type": "dashboard"
       }
     ]
@@ -28,7 +28,7 @@
         "rgba(40, 237, 51, 0.89)",
         "rgba(242, 18, 18, 0.97)"
       ],
-      "datasource": "$datasource",
+      "datasource": "testOpenApi",
       "decimals": 1,
       "format": "s",
       "gauge": {
@@ -144,7 +144,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "$datasource",
+      "datasource": "testOpenApi",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -257,7 +257,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "$datasource",
+      "datasource": "testOpenApi",
       "decimals": 2,
       "format": "decbytes",
       "gauge": {
@@ -371,7 +371,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "$datasource",
+      "datasource": "testOpenApi",
       "decimals": 2,
       "format": "decbytes",
       "gauge": {
@@ -485,7 +485,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "$datasource",
+      "datasource": "testOpenApi",
       "format": "percentunit",
       "gauge": {
         "maxValue": 100,
@@ -602,7 +602,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "$datasource",
+      "datasource": "testOpenApi",
       "format": "short",
       "gauge": {
         "maxValue": 100,
@@ -715,7 +715,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": "testOpenApi",
       "decimals": null,
       "description": "网络的每秒包数量",
       "editable": true,
@@ -838,7 +838,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "$datasource",
+      "datasource": "testOpenApi",
       "decimals": null,
       "description": "系统网络流量速率",
       "editable": true,
@@ -969,7 +969,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 5,
@@ -1091,7 +1091,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 5,
@@ -1214,7 +1214,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 5,
@@ -1316,7 +1316,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -1439,7 +1439,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -1563,7 +1563,7 @@
             "label": "Others",
             "threshold": 0
           },
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fontSize": "80%",
           "format": "short",
           "gridPos": {
@@ -1635,7 +1635,7 @@
           "bars": true,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 9,
@@ -1771,7 +1771,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 9,
@@ -1894,7 +1894,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -1983,7 +1983,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 8,
@@ -2085,7 +2085,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -2206,7 +2206,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -2330,7 +2330,7 @@
             "label": "Others",
             "threshold": 0
           },
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fontSize": "80%",
           "format": "short",
           "gridPos": {
@@ -2402,7 +2402,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 9,
@@ -2490,7 +2490,7 @@
           "bars": true,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 9,
@@ -2611,7 +2611,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 9,
@@ -2699,7 +2699,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 9,
@@ -2801,7 +2801,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -2923,7 +2923,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -3045,7 +3045,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -3167,7 +3167,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -3288,7 +3288,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -3410,7 +3410,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -3532,7 +3532,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -3656,7 +3656,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -3778,7 +3778,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -3900,7 +3900,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4021,7 +4021,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4143,7 +4143,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4265,7 +4265,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4386,7 +4386,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4508,7 +4508,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4630,7 +4630,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4751,7 +4751,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4873,7 +4873,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -4995,7 +4995,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -5116,7 +5116,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -5238,7 +5238,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -5360,7 +5360,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -5481,7 +5481,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -5603,7 +5603,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "$datasource",
+          "datasource": "testOpenApi",
           "fill": 1,
           "gridPos": {
             "h": 7,
@@ -5760,7 +5760,7 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": "testOpenApi",
         "definition": "label_values(go_goroutines,instance)",
         "hide": 0,
         "includeAll": true,
@@ -5787,7 +5787,7 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": "testOpenApi",
         "definition": "label_values(http_server_requests_duration_ms_count{path!=\"\",instance=~\"$instance\"}, path)",
         "hide": 0,
         "includeAll": true,
@@ -5814,7 +5814,7 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": "testOpenApi",
         "definition": "label_values(http_server_requests_duration_ms_count{caller!=\"\",instance=~\"$instance\"}, caller)",
         "hide": 0,
         "includeAll": true,
@@ -5841,7 +5841,7 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": "testOpenApi",
         "definition": "label_values(http_client_requests_duration_ms_count{path!=\"\",instance=~\"$instance\"}, path)",
         "hide": 0,
         "includeAll": true,
@@ -5868,7 +5868,7 @@
             "$__all"
           ]
         },
-        "datasource": "$datasource",
+        "datasource": "testOpenApi",
         "definition": "label_values(grpc_server_requests_duration_ms_bucket{instance=~\"$instance\"},caller)",
         "hide": 0,
         "includeAll": true,
