@@ -1,7 +1,6 @@
 package binding
 
 import (
-	"fmt"
 	"github.com/pkg/errors"
 	"reflect"
 	"sync"
