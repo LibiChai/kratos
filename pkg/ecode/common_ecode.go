@@ -18,8 +18,7 @@ var (
 	Deadline           = add(-504) // 服务调用超时
 	LimitExceed        = add(-509) // 超出限制
 
-	//
-	RequestParamErr         = add(4001) // 请求参数错误
+	RequestParamErr = add(4001) // 请求参数错误
 
 	//SignParamErr = add(4011)  //签名参数错误
 	//SignTimestampExpire = add(4012) //签名过期
