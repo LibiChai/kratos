@@ -144,7 +144,8 @@ func latestKratos() (string, error) {
 }
 
 func gopath() (gp string) {
-	gopaths := strings.Split(os.Getenv("GOPATH"), ":")
+	gopaths := strings.Split(os.Getenv("GOPATH"), string(filepath.ListSeparator))
+
 	if len(gopaths) == 1 && gopaths[0] != "" {
 		return gopaths[0]
 	}
