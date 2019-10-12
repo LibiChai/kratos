@@ -18,8 +18,11 @@ var (
 	Deadline           = add(-504) // 服务调用超时
 	LimitExceed        = add(-509) // 超出限制
 
-	SignParamErr = add(4001)  //签名参数错误
-	SignTimestampExpire = add(4002) //签名过期
-	SignNonceDuplicate = add(4003) //签名nonce重复
-	SignCheckErr = add(4004) //签名验证失败
+	//
+	RequestParamErr         = add(4001) // 请求参数错误
+
+	//SignParamErr = add(4011)  //签名参数错误
+	//SignTimestampExpire = add(4012) //签名过期
+	//SignNonceDuplicate = add(4013) //签名nonce重复
+	//SignCheckErr = add(4014) //签名验证失败
 )

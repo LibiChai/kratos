@@ -295,7 +295,7 @@ func (c *Context) Bind(obj interface{}) error {
 // See the binding package.
 func (c *Context) mustBindWith(obj interface{}, b binding.Binding) (err error) {
 	if err = b.Bind(c.Request, obj); err != nil {
-		c.Error = ecode.RequestErr
+		c.Error = ecode.RequestParamErr
 		c.Render(http.StatusBadRequest, render.JSON{
 			Code:    ecode.RequestErr.Code(),
 			Message: err.Error(),

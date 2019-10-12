@@ -45,7 +45,7 @@ func Logger() HandlerFunc {
 		if err != nil {
 			errmsg = err.Error()
 			lf = log.Errorv
-			if cerr.Code() > 0 {
+			if cerr.Code() > -500 {	//只有-500以下错误才会标记为error
 				lf = log.Warnv
 			}
 		} else {
