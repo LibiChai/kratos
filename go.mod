@@ -12,8 +12,8 @@ require (
 	github.com/fatih/color v1.7.0
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/go-ole/go-ole v1.2.4 // indirect
-	github.com/go-playground/locales v0.12.1 // indirect
-	github.com/go-playground/universal-translator v0.16.0 // indirect
+	github.com/go-playground/locales v0.12.1
+	github.com/go-playground/universal-translator v0.16.0
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gogo/protobuf v1.2.1
 	github.com/golang/groupcache v0.0.0-20190702054246-869f871628b6 // indirect
@@ -42,11 +42,7 @@ require (
 	go.uber.org/atomic v1.4.0 // indirect
 	go.uber.org/zap v1.10.0 // indirect
 	golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4 // indirect
-	golang.org/x/net v0.0.0-20190912160710-24e19bdeb0f2
-	golang.org/x/time v0.0.0-20190513212739-9d24e82272b4 // indirect
 	google.golang.org/appengine v1.6.1 // indirect
-	google.golang.org/genproto v0.0.0-20190716160619-c506a9f90610
-	google.golang.org/grpc v1.23.1
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v9 v9.29.1
 	gopkg.in/yaml.v2 v2.2.2
