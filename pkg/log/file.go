@@ -2,7 +2,6 @@ package log
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"path/filepath"
 	"time"
@@ -91,7 +90,6 @@ func (h *FileHandler) Log(ctx context.Context, lv Level, args ...D) {
 		d = format(d)
 	}
 
-	fmt.Printf("%+v",d)
 	_ = h.render.Render(w, d)
 	_, _ = w.Write([]byte("\n"))
 }
