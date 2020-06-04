@@ -2,6 +2,7 @@ package blademaster
 
 import (
 	"context"
+	"github.com/bilibili/kratos/pkg/net/metadata"
 	"math"
 	"net/http"
 	"strconv"
@@ -49,7 +50,6 @@ type Context struct {
 	RoutePath string
 
 	Params Params
-
 }
 
 /************************************/
@@ -66,7 +66,6 @@ func (c *Context) Next() {
 		c.index++
 	}
 }
-
 
 // Abort prevents pending handlers from being called. Note that this will not stop the current handler.
 // Let's say you have an authorization middleware that validates that the current request is authorized.
@@ -173,7 +172,7 @@ func (c *Context) JSON(data interface{}, err error) {
 		code = http.StatusServiceUnavailable
 		message = err.Error()
 	}
-	writeStatusCode(c.Writer, bcode.Code())
+	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
 	c.Render(code, render.JSON{
 		Code:    bcode.Code(),
 		Message: message,
@@ -181,10 +180,10 @@ func (c *Context) JSON(data interface{}, err error) {
 	})
 }
 
-func (c *Context) JSONStatus(data interface{}, err error,code int) {
+func (c *Context) JSONStatus(data interface{}, err error, code int) {
 	c.Error = err
 	bcode := ecode.Cause(err)
-	writeStatusCode(c.Writer, bcode.Code())
+	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
 	c.Render(code, render.JSON{
 		Code:    bcode.Code(),
 		Message: bcode.Message(),
@@ -204,7 +203,7 @@ func (c *Context) JSONMap(data map[string]interface{}, err error) {
 			code = http.StatusServiceUnavailable
 		}
 	*/
-	writeStatusCode(c.Writer, bcode.Code())
+	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
 	data["code"] = bcode.Code()
 	if _, ok := data["message"]; !ok {
 		data["message"] = bcode.Message()
@@ -222,7 +221,7 @@ func (c *Context) XML(data interface{}, err error) {
 	if bcode.Code() == -500 {
 		code = http.StatusServiceUnavailable
 	}
-	writeStatusCode(c.Writer, bcode.Code())
+	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
 	c.Render(code, render.XML{
 		Code:    bcode.Code(),
 		Message: bcode.Message(),
@@ -250,7 +249,7 @@ func (c *Context) Protobuf(data proto.Message, err error) {
 		any.TypeUrl = "type.googleapis.com/" + proto.MessageName(data)
 		any.Value = bytes
 	}
-	writeStatusCode(c.Writer, bcode.Code())
+	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
 	c.Render(code, render.PB{
 		Code:    int64(bcode.Code()),
 		Message: bcode.Message(),
@@ -306,7 +305,9 @@ func (c *Context) mustBindWith(obj interface{}, b binding.Binding) (err error) {
 	return
 }
 
-func writeStatusCode(w http.ResponseWriter, ecode int) {
+func writeStatusCode(w http.ResponseWriter, requestID string, ecode int) {
 	header := w.Header()
+
+	header.Set(_httpHeaderRequestID, requestID)
 	header.Set("tal-status-code", strconv.FormatInt(int64(ecode), 10))
 }

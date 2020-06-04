@@ -34,6 +34,8 @@ func Logger() HandlerFunc {
 			caller = noUser
 		}
 
+		requestID := metadata.String(c, metadata.RequestID)
+
 		if len(c.RoutePath) > 0 {
 			_metricServerReqCodeTotal.Inc(c.RoutePath[1:], caller, strconv.FormatInt(int64(cerr.Code()), 10))
 			_metricServerReqDur.Observe(int64(dt/time.Millisecond), c.RoutePath[1:], caller)
@@ -45,7 +47,7 @@ func Logger() HandlerFunc {
 		if err != nil {
 			errmsg = err.Error()
 			lf = log.Errorv
-			if cerr.Code() > -500 {	//只有-500以下错误才会标记为error
+			if cerr.Code() > -500 { // 只有-500以下错误才会标记为error
 				lf = log.Warnv
 			}
 		} else {
@@ -66,6 +68,7 @@ func Logger() HandlerFunc {
 			log.KVFloat64("timeout_quota", quota),
 			log.KVFloat64("ts", dt.Seconds()),
 			log.KVString("source", "http-access-log"),
+			log.KVString("request-id", requestID),
 		)
 	}
 }

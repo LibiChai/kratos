@@ -2,7 +2,6 @@ package metadata
 
 // metadata common key
 const (
-
 	// Network
 	RemoteIP   = "remote_ip"
 	RemotePort = "remote_port"
@@ -36,6 +35,9 @@ const (
 
 	// Criticality 重要性
 	Criticality = "criticality"
+
+	// ReqeustID
+	RequestID = "request_id"
 )
 
 var outgoingKey = map[string]struct{}{

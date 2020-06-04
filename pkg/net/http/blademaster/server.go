@@ -310,6 +310,7 @@ func (engine *Engine) handleContext(c *Context) {
 		metadata.RemoteIP:    remoteIP(req),
 		metadata.RemotePort:  remotePort(req),
 		metadata.Criticality: string(criticality.Critical),
+		metadata.RequestID:   requestID(req),
 	}
 	parseMetadataTo(req, md)
 	ctx := metadata.NewContext(context.Background(), md)

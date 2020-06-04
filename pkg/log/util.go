@@ -23,6 +23,9 @@ func addExtraField(ctx context.Context, fields map[string]interface{}) {
 	if color := metadata.String(ctx, metadata.Color); color != "" {
 		fields[_color] = color
 	}
+	if requestID := metadata.String(ctx, metadata.RequestID); requestID != "" {
+		fields[_requestID] = requestID
+	}
 	if env.Color != "" {
 		fields[_envColor] = env.Color
 	}

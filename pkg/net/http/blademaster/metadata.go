@@ -2,6 +2,7 @@ package blademaster
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"net/http"
 	"strconv"
 	"strings"
@@ -21,6 +22,7 @@ const (
 	_httpHeaderTimeout      = "x1-bmspy-timeout"
 	_httpHeaderRemoteIP     = "x-backend-bm-real-ip"
 	_httpHeaderRemoteIPPort = "x-backend-bm-real-ipport"
+	_httpHeaderRequestID    = "x-request-id"
 )
 
 const (
@@ -112,6 +114,14 @@ func remoteIP(req *http.Request) (remote string) {
 	}
 	remote = req.RemoteAddr[:strings.Index(req.RemoteAddr, ":")]
 	return
+}
+
+// requestID
+func requestID(req *http.Request) (requestID string) {
+	if requestID = req.Header.Get(_httpHeaderRequestID); requestID != "" && requestID != "null" {
+		return
+	}
+	return uuid.New().String()
 }
 
 func remotePort(req *http.Request) (port string) {
