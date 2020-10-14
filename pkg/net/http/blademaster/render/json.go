@@ -15,6 +15,7 @@ type JSON struct {
 	Code       int         `json:"code"`
 	Message    string      `json:"msg"`
 	ServerTime int64       `json:"server_time"`
+	RequestID  string      `json:"request_id"`
 	Data       interface{} `json:"data,omitempty"`
 }
 

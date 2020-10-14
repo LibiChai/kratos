@@ -2,11 +2,12 @@ package blademaster
 
 import (
 	"context"
-	"github.com/bilibili/kratos/pkg/net/metadata"
 	"math"
 	"net/http"
 	"strconv"
 	"text/template"
+
+	"github.com/bilibili/kratos/pkg/net/metadata"
 
 	"github.com/bilibili/kratos/pkg/ecode"
 	"github.com/bilibili/kratos/pkg/net/http/blademaster/binding"
@@ -173,10 +174,12 @@ func (c *Context) JSON(data interface{}, err error) {
 		message = err.Error()
 	}
 	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
+	requestID := metadata.String(c, metadata.RequestID)
 	c.Render(code, render.JSON{
-		Code:    bcode.Code(),
-		Message: message,
-		Data:    data,
+		Code:      bcode.Code(),
+		Message:   message,
+		RequestID: requestID,
+		Data:      data,
 	})
 }
 
@@ -184,10 +187,12 @@ func (c *Context) JSONStatus(data interface{}, err error, code int) {
 	c.Error = err
 	bcode := ecode.Cause(err)
 	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
+	requestID := metadata.String(c, metadata.RequestID)
 	c.Render(code, render.JSON{
-		Code:    bcode.Code(),
-		Message: bcode.Message(),
-		Data:    data,
+		Code:      bcode.Code(),
+		Message:   bcode.Message(),
+		RequestID: requestID,
+		Data:      data,
 	})
 }
 
