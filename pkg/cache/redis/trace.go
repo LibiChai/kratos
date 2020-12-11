@@ -5,15 +5,14 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bilibili/kratos/pkg/log"
-	"github.com/bilibili/kratos/pkg/net/trace"
+	"github.com/go-kratos/kratos/pkg/log"
+	"github.com/go-kratos/kratos/pkg/net/trace"
 )
 
 const (
-	_traceComponentName = "pkg/cache/redis"
+	_traceComponentName = "library/cache/redis"
 	_tracePeerService   = "redis"
 	_traceSpanKind      = "client"
-	_slowLogDuration    = time.Millisecond * 250
 )
 
 var _internalTags = []trace.Tag{
@@ -23,27 +22,36 @@ var _internalTags = []trace.Tag{
 }
 
 type traceConn struct {
-	// tr for pipeline, if tr != nil meaning on pipeline
-	tr  trace.Trace
-	ctx context.Context
+	// tr parent trace.
+	tr trace.Trace
+	// trPipe for pipeline, if trPipe != nil meaning on pipeline.
+	trPipe trace.Trace
+
 	// connTag include e.g. ip,port
 	connTags []trace.Tag
 
 	// origin redis conn
 	Conn
 	pending int
+	// TODO: split slow log from trace.
+	slowLogThreshold time.Duration
 }
 
 func (t *traceConn) Do(commandName string, args ...interface{}) (reply interface{}, err error) {
 	statement := getStatement(commandName, args...)
-	defer slowLog(statement, time.Now())
-	root, ok := trace.FromContext(t.ctx)
+	defer t.slowLog(statement, time.Now())
+
 	// NOTE: ignored empty commandName
 	// current sdk will Do empty command after pipeline finished
-	if !ok || commandName == "" {
+	if commandName == "" {
+		t.pending = 0
+		t.trPipe = nil
 		return t.Conn.Do(commandName, args...)
 	}
-	tr := root.Fork("", "Redis:"+commandName)
+	if t.tr == nil {
+		return t.Conn.Do(commandName, args...)
+	}
+	tr := t.tr.Fork("", "Redis:"+commandName)
 	tr.SetTag(_internalTags...)
 	tr.SetTag(t.connTags...)
 	tr.SetTag(trace.TagString(trace.TagDBStatement, statement))
@@ -52,27 +60,26 @@ func (t *traceConn) Do(commandName string, args ...interface{}) (reply interface
 	return
 }
 
-func (t *traceConn) Send(commandName string, args ...interface{}) error {
+func (t *traceConn) Send(commandName string, args ...interface{}) (err error) {
 	statement := getStatement(commandName, args...)
-	defer slowLog(statement, time.Now())
+	defer t.slowLog(statement, time.Now())
 	t.pending++
-	root, ok := trace.FromContext(t.ctx)
-	if !ok {
+	if t.tr == nil {
 		return t.Conn.Send(commandName, args...)
 	}
-	if t.tr == nil {
-		t.tr = root.Fork("", "Redis:Pipeline")
-		t.tr.SetTag(_internalTags...)
-		t.tr.SetTag(t.connTags...)
+
+	if t.trPipe == nil {
+		t.trPipe = t.tr.Fork("", "Redis:Pipeline")
+		t.trPipe.SetTag(_internalTags...)
+		t.trPipe.SetTag(t.connTags...)
 	}
-	t.tr.SetLog(
+	t.trPipe.SetLog(
 		trace.Log(trace.LogEvent, "Send"),
 		trace.Log("db.statement", statement),
 	)
-	err := t.Conn.Send(commandName, args...)
-	if err != nil {
-		t.tr.SetTag(trace.TagBool(trace.TagError, true))
-		t.tr.SetLog(
+	if err = t.Conn.Send(commandName, args...); err != nil {
+		t.trPipe.SetTag(trace.TagBool(trace.TagError, true))
+		t.trPipe.SetLog(
 			trace.Log(trace.LogEvent, "Send Fail"),
 			trace.Log(trace.LogMessage, err.Error()),
 		)
@@ -81,15 +88,15 @@ func (t *traceConn) Send(commandName string, args ...interface{}) error {
 }
 
 func (t *traceConn) Flush() error {
-	defer slowLog("Flush", time.Now())
-	if t.tr == nil {
+	defer t.slowLog("Flush", time.Now())
+	if t.trPipe == nil {
 		return t.Conn.Flush()
 	}
-	t.tr.SetLog(trace.Log(trace.LogEvent, "Flush"))
+	t.trPipe.SetLog(trace.Log(trace.LogEvent, "Flush"))
 	err := t.Conn.Flush()
 	if err != nil {
-		t.tr.SetTag(trace.TagBool(trace.TagError, true))
-		t.tr.SetLog(
+		t.trPipe.SetTag(trace.TagBool(trace.TagError, true))
+		t.trPipe.SetLog(
 			trace.Log(trace.LogEvent, "Flush Fail"),
 			trace.Log(trace.LogMessage, err.Error()),
 		)
@@ -98,15 +105,15 @@ func (t *traceConn) Flush() error {
 }
 
 func (t *traceConn) Receive() (reply interface{}, err error) {
-	defer slowLog("Receive", time.Now())
-	if t.tr == nil {
+	defer t.slowLog("Receive", time.Now())
+	if t.trPipe == nil {
 		return t.Conn.Receive()
 	}
-	t.tr.SetLog(trace.Log(trace.LogEvent, "Receive"))
+	t.trPipe.SetLog(trace.Log(trace.LogEvent, "Receive"))
 	reply, err = t.Conn.Receive()
 	if err != nil {
-		t.tr.SetTag(trace.TagBool(trace.TagError, true))
-		t.tr.SetLog(
+		t.trPipe.SetTag(trace.TagBool(trace.TagError, true))
+		t.trPipe.SetLog(
 			trace.Log(trace.LogEvent, "Receive Fail"),
 			trace.Log(trace.LogMessage, err.Error()),
 		)
@@ -115,20 +122,23 @@ func (t *traceConn) Receive() (reply interface{}, err error) {
 		t.pending--
 	}
 	if t.pending == 0 {
-		t.tr.Finish(nil)
-		t.tr = nil
+		t.trPipe.Finish(nil)
+		t.trPipe = nil
 	}
 	return reply, err
 }
 
 func (t *traceConn) WithContext(ctx context.Context) Conn {
-	t.ctx = ctx
+	t.Conn = t.Conn.WithContext(ctx)
+	t.tr, _ = trace.FromContext(ctx)
+	t.pending = 0
+	t.trPipe = nil
 	return t
 }
 
-func slowLog(statement string, now time.Time) {
+func (t *traceConn) slowLog(statement string, now time.Time) {
 	du := time.Since(now)
-	if du > _slowLogDuration {
+	if du > t.slowLogThreshold {
 		log.Warn("%s slow log statement: %s time: %v", _tracePeerService, statement, du)
 	}
 }

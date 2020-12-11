@@ -7,13 +7,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bilibili/kratos/pkg/conf/env"
-	"github.com/bilibili/kratos/pkg/naming"
-	"github.com/bilibili/kratos/pkg/net/netutil/breaker"
-	"github.com/bilibili/kratos/pkg/net/rpc/warden"
-	pb "github.com/bilibili/kratos/pkg/net/rpc/warden/internal/proto/testproto"
-	"github.com/bilibili/kratos/pkg/net/rpc/warden/resolver"
-	xtime "github.com/bilibili/kratos/pkg/time"
+	"github.com/go-kratos/kratos/pkg/conf/env"
+	"github.com/go-kratos/kratos/pkg/naming"
+	"github.com/go-kratos/kratos/pkg/net/netutil/breaker"
+	"github.com/go-kratos/kratos/pkg/net/rpc/warden"
+	pb "github.com/go-kratos/kratos/pkg/net/rpc/warden/internal/proto/testproto"
+	"github.com/go-kratos/kratos/pkg/net/rpc/warden/resolver"
+	xtime "github.com/go-kratos/kratos/pkg/time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -74,10 +74,9 @@ func createTestClient(t *testing.T) pb.GreeterClient {
 		Timeout: xtime.Duration(time.Second * 10),
 		Breaker: &breaker.Config{
 			Window:  xtime.Duration(3 * time.Second),
-			Sleep:   xtime.Duration(3 * time.Second),
 			Bucket:  10,
-			Ratio:   0.3,
 			Request: 20,
+			K:       1.5,
 		},
 	})
 	conn, err := client.Dial(context.TODO(), "mockdiscovery://authority/main.test")

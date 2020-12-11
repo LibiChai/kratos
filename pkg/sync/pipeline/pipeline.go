@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bilibili/kratos/pkg/net/metadata"
-	"github.com/bilibili/kratos/pkg/stat/metric"
-	xtime "github.com/bilibili/kratos/pkg/time"
+	"github.com/go-kratos/kratos/pkg/net/metadata"
+	"github.com/go-kratos/kratos/pkg/stat/metric"
+	xtime "github.com/go-kratos/kratos/pkg/time"
 )
 
 // ErrFull channel full error
@@ -122,9 +122,14 @@ func (p *Pipeline) Start() {
 }
 
 // SyncAdd sync add a value to channal, channel shard in split method
-func (p *Pipeline) SyncAdd(c context.Context, key string, value interface{}) {
+func (p *Pipeline) SyncAdd(c context.Context, key string, value interface{}) (err error) {
 	ch, msg := p.add(c, key, value)
-	ch <- msg
+	select {
+	case ch <- msg:
+	case <-c.Done():
+		err = c.Err()
+	}
+	return
 }
 
 // Add async add a value to channal, channel shard in split method
@@ -164,17 +169,18 @@ func (p *Pipeline) Close() (err error) {
 func (p *Pipeline) mergeproc(mirror bool, index int, ch <-chan *message) {
 	defer p.wait.Done()
 	var (
-		m         *message
-		vals      = make(map[string][]interface{}, p.config.MaxSize)
-		closed    bool
-		count     int
-		inteval   = p.config.Interval
-		oldTicker = true
+		m       *message
+		vals    = make(map[string][]interface{}, p.config.MaxSize)
+		closed  bool
+		count   int
+		inteval = p.config.Interval
+		timeout = false
 	)
 	if index > 0 {
 		inteval = xtime.Duration(int64(index) * (int64(p.config.Interval) / int64(p.config.Worker)))
 	}
-	ticker := time.NewTicker(time.Duration(inteval))
+	timer := time.NewTimer(time.Duration(inteval))
+	defer timer.Stop()
 	for {
 		select {
 		case m = <-ch:
@@ -188,12 +194,8 @@ func (p *Pipeline) mergeproc(mirror bool, index int, ch <-chan *message) {
 				break
 			}
 			continue
-		case <-ticker.C:
-			if oldTicker {
-				ticker.Stop()
-				ticker = time.NewTicker(time.Duration(p.config.Interval))
-				oldTicker = false
-			}
+		case <-timer.C:
+			timeout = true
 		}
 		name := p.name
 		process := count
@@ -210,8 +212,12 @@ func (p *Pipeline) mergeproc(mirror bool, index int, ch <-chan *message) {
 		_metricChanLen.Set(float64(len(ch)), name, strconv.Itoa(index))
 		_metricCount.Add(float64(process), name, strconv.Itoa(index))
 		if closed {
-			ticker.Stop()
 			return
 		}
+		if !timer.Stop() && !timeout {
+			<-timer.C
+			timeout = false
+		}
+		timer.Reset(time.Duration(p.config.Interval))
 	}
 }

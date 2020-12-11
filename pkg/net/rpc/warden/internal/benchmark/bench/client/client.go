@@ -8,10 +8,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/bilibili/kratos/pkg/net/netutil/breaker"
-	"github.com/bilibili/kratos/pkg/net/rpc/warden"
-	"github.com/bilibili/kratos/pkg/net/rpc/warden/internal/benchmark/bench/proto"
-	xtime "github.com/bilibili/kratos/pkg/time"
+	"github.com/go-kratos/kratos/pkg/net/netutil/breaker"
+	"github.com/go-kratos/kratos/pkg/net/rpc/warden"
+	"github.com/go-kratos/kratos/pkg/net/rpc/warden/internal/benchmark/bench/proto"
+	xtime "github.com/go-kratos/kratos/pkg/time"
 
 	goproto "github.com/gogo/protobuf/proto"
 	"github.com/montanaflynn/stats"
@@ -39,10 +39,9 @@ func wardenCli() proto.HelloClient {
 		Timeout: xtime.Duration(time.Second * 10),
 		Breaker: &breaker.Config{
 			Window:  xtime.Duration(3 * time.Second),
-			Sleep:   xtime.Duration(3 * time.Second),
 			Bucket:  10,
-			Ratio:   0.3,
 			Request: 20,
+			K:       1.5,
 		},
 	},
 		grpc.WithInitialWindowSize(iws),
