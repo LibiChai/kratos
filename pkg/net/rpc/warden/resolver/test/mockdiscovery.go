@@ -3,8 +3,8 @@ package resolver
 import (
 	"context"
 
-	"github.com/bilibili/kratos/pkg/conf/env"
-	"github.com/bilibili/kratos/pkg/naming"
+	"github.com/go-kratos/kratos/pkg/conf/env"
+	"github.com/go-kratos/kratos/pkg/naming"
 )
 
 type mockDiscoveryBuilder struct {
@@ -12,7 +12,7 @@ type mockDiscoveryBuilder struct {
 	watchch   map[string][]*mockDiscoveryResolver
 }
 
-func (mb *mockDiscoveryBuilder) Build(id string) naming.Resolver {
+func (mb *mockDiscoveryBuilder) Build(id string, opts ...naming.BuildOpt) naming.Resolver {
 	mr := &mockDiscoveryResolver{
 		d:       mb,
 		watchch: make(chan struct{}, 1),

@@ -12,8 +12,8 @@ var jsonContentType = []string{"application/json; charset=utf-8"}
 
 // JSON common json struct.
 type JSON struct {
-	Code       int         `json:"code"`
-	Message    string      `json:"msg"`
+	Code       int         `json:"error_code"`
+	Message    string      `json:"error_msg"`
 	ServerTime int64       `json:"server_time"`
 	RequestID  string      `json:"request_id"`
 	Data       interface{} `json:"data,omitempty"`

@@ -11,10 +11,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bilibili/kratos/tool/protobuf/pkg/gen"
-	"github.com/bilibili/kratos/tool/protobuf/pkg/naming"
-	"github.com/bilibili/kratos/tool/protobuf/pkg/typemap"
-	"github.com/bilibili/kratos/tool/protobuf/pkg/utils"
+	"github.com/go-kratos/kratos/tool/protobuf/pkg/gen"
+	"github.com/go-kratos/kratos/tool/protobuf/pkg/naming"
+	"github.com/go-kratos/kratos/tool/protobuf/pkg/typemap"
+	"github.com/go-kratos/kratos/tool/protobuf/pkg/utils"
 	"github.com/golang/protobuf/protoc-gen-go/descriptor"
 	plugin "github.com/golang/protobuf/protoc-gen-go/plugin"
 	"github.com/pkg/errors"
@@ -22,8 +22,8 @@ import (
 
 const Version = "v0.1"
 
-var GoModuleImportPath = "github.com/bilibili/kratos"
-var GoModuleDirName = "github.com/bilibili/kratos"
+var GoModuleImportPath = "github.com/go-kratos/kratos"
+var GoModuleDirName = "github.com/go-kratos/kratos"
 
 type Base struct {
 	Reg *typemap.Registry
@@ -293,9 +293,16 @@ func (t *Base) GoTypeName(protoName string) string {
 	return prefix + name
 }
 
+func streamingMethod(method *descriptor.MethodDescriptorProto) bool {
+	return (method.ServerStreaming != nil && *method.ServerStreaming) || (method.ClientStreaming != nil && *method.ClientStreaming)
+}
+
 func (t *Base) ShouldGenForMethod(file *descriptor.FileDescriptorProto,
 	service *descriptor.ServiceDescriptorProto,
 	method *descriptor.MethodDescriptorProto) bool {
+	if streamingMethod(method) {
+		return false
+	}
 	if !t.Params.ExplicitHTTP {
 		return true
 	}

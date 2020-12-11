@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bilibili/kratos/pkg/net/netutil/breaker"
-	xtime "github.com/bilibili/kratos/pkg/time"
+	"github.com/go-kratos/kratos/pkg/net/netutil/breaker"
+	xtime "github.com/go-kratos/kratos/pkg/time"
 )
 
 // ExampleGroup show group usage.
 func ExampleGroup() {
 	c := &breaker.Config{
 		Window:  xtime.Duration(3 * time.Second),
-		Sleep:   xtime.Duration(100 * time.Millisecond),
+		K:       1.5,
 		Bucket:  10,
-		Ratio:   0.5,
 		Request: 100,
 	}
 	// init default config

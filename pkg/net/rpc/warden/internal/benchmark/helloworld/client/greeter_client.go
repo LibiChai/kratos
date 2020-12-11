@@ -9,10 +9,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/bilibili/kratos/pkg/net/netutil/breaker"
-	"github.com/bilibili/kratos/pkg/net/rpc/warden"
-	pb "github.com/bilibili/kratos/pkg/net/rpc/warden/internal/proto/testproto"
-	xtime "github.com/bilibili/kratos/pkg/time"
+	"github.com/go-kratos/kratos/pkg/net/netutil/breaker"
+	"github.com/go-kratos/kratos/pkg/net/rpc/warden"
+	pb "github.com/go-kratos/kratos/pkg/net/rpc/warden/internal/proto/testproto"
+	xtime "github.com/go-kratos/kratos/pkg/time"
 )
 
 var (
@@ -21,10 +21,9 @@ var (
 		Timeout: xtime.Duration(time.Second * 10),
 		Breaker: &breaker.Config{
 			Window:  xtime.Duration(3 * time.Second),
-			Sleep:   xtime.Duration(3 * time.Second),
 			Bucket:  10,
-			Ratio:   0.3,
 			Request: 20,
+			K:       1.5,
 		},
 	}
 	cli         pb.GreeterClient

@@ -7,12 +7,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bilibili/kratos/pkg/net/netutil/breaker"
-	"github.com/bilibili/kratos/pkg/net/rpc/warden"
-	pb "github.com/bilibili/kratos/pkg/net/rpc/warden/internal/proto/testproto"
-	"github.com/bilibili/kratos/pkg/net/rpc/warden/resolver"
-	"github.com/bilibili/kratos/pkg/net/rpc/warden/resolver/direct"
-	xtime "github.com/bilibili/kratos/pkg/time"
+	"github.com/go-kratos/kratos/pkg/net/netutil/breaker"
+	"github.com/go-kratos/kratos/pkg/net/rpc/warden"
+	pb "github.com/go-kratos/kratos/pkg/net/rpc/warden/internal/proto/testproto"
+	"github.com/go-kratos/kratos/pkg/net/rpc/warden/resolver"
+	"github.com/go-kratos/kratos/pkg/net/rpc/warden/resolver/direct"
+	xtime "github.com/go-kratos/kratos/pkg/time"
 )
 
 type testServer struct {
@@ -42,8 +42,8 @@ func createServer(name, listen string) *warden.Server {
 func TestMain(m *testing.M) {
 	resolver.Register(direct.New())
 	ctx := context.TODO()
-	s1 := createServer("server1", "127.0.0.1:18081")
-	s2 := createServer("server2", "127.0.0.1:18082")
+	s1 := createServer("server1", "127.0.0.1:18001")
+	s2 := createServer("server2", "127.0.0.1:18002")
 	defer s1.Shutdown(ctx)
 	defer s2.Shutdown(ctx)
 	os.Exit(m.Run())
@@ -55,10 +55,9 @@ func createTestClient(t *testing.T, connStr string) pb.GreeterClient {
 		Timeout: xtime.Duration(time.Second * 10),
 		Breaker: &breaker.Config{
 			Window:  xtime.Duration(3 * time.Second),
-			Sleep:   xtime.Duration(3 * time.Second),
 			Bucket:  10,
-			Ratio:   0.3,
 			Request: 20,
+			K:       1.5,
 		},
 	})
 	conn, err := client.Dial(context.TODO(), connStr)
@@ -69,7 +68,7 @@ func createTestClient(t *testing.T, connStr string) pb.GreeterClient {
 }
 
 func TestDirect(t *testing.T) {
-	cli := createTestClient(t, "direct://default/127.0.0.1:18083,127.0.0.1:18082")
+	cli := createTestClient(t, "direct://default/127.0.0.1:18003,127.0.0.1:18002")
 	count := 0
 	for i := 0; i < 10; i++ {
 		if resp, err := cli.SayHello(context.TODO(), &pb.HelloRequest{Age: 1, Name: "hello"}); err != nil {

@@ -1,9 +1,10 @@
-![kratos](doc/img/kratos3.png)
+![kratos](docs/img/kratos3.png)
 
 [![Language](https://img.shields.io/badge/Language-Go-blue.svg)](https://golang.org/)
-[![Build Status](https://travis-ci.org/bilibili/kratos.svg?branch=master)](https://travis-ci.org/bilibili/kratos)
-[![GoDoc](https://godoc.org/github.com/bilibili/kratos?status.svg)](https://godoc.org/github.com/bilibili/kratos)
-[![Go Report Card](https://goreportcard.com/badge/github.com/bilibili/kratos)](https://goreportcard.com/report/github.com/bilibili/kratos)
+[![Build Status](https://github.com/go-kratos/kratos/workflows/Go/badge.svg)](https://github.com/go-kratos/kratos/actions)
+[![GoDoc](https://godoc.org/github.com/go-kratos/kratos?status.svg)](https://godoc.org/github.com/go-kratos/kratos)
+[![Go Report Card](https://goreportcard.com/badge/github.com/go-kratos/kratos)](https://goreportcard.com/report/github.com/go-kratos/kratos)
+[![Discord](https://img.shields.io/discord/766619759214854164?label=chat&logo=discord)](https://discord.gg/BWzJsUJ)
 
 # Kratos
 
@@ -20,7 +21,7 @@ Kratos是[bilibili](https://www.bilibili.com)开源的一套Go微服务框架，
 * GRPC Warden：基于官方gRPC开发，集成[discovery](https://github.com/bilibili/discovery)服务发现，并融合P2C负载均衡；
 * Cache：优雅的接口化设计，非常方便的缓存序列化，推荐结合代理模式[overlord](https://github.com/bilibili/overlord)；
 * Database：集成MySQL/HBase/TiDB，添加熔断保护和统计支持，可快速发现数据层压力；
-* Config：方便易用的[paladin sdk](doc/wiki-cn/config.md)，可配合远程配置中心，实现配置版本管理和更新；
+* Config：方便易用的[paladin sdk](https://go-kratos.github.io/kratos/#/config)，可配合远程配置中心，实现配置版本管理和更新；
 * Log：类似[zap](https://github.com/uber-go/zap)的field实现高性能日志库，并结合log-agent实现远程日志管理；
 * Trace：基于opentracing，集成了全链路trace支持（gRPC/HTTP/MySQL/Redis/Memcached）；
 * Kratos Tool：工具链，可快速生成标准项目，或者通过Protobuf生成代码，非常便捷使用gRPC、HTTP、swagger文档；
@@ -29,11 +30,19 @@ Kratos是[bilibili](https://www.bilibili.com)开源的一套Go微服务框架，
 
 ### Requirments
 
-Go version>=1.12 and GO111MODULE=on
+Go version>=1.13
 
 ### Installation
 ```shell
-go get -u github.com/bilibili/kratos/tool/kratos
+# Linux/macOS
+GO111MODULE=on && go get -u github.com/go-kratos/kratos/tool/kratos
+
+# Windows (Powershell)
+go env -w GO111MODULE=on ; go get -u github.com/go-kratos/kratos/tool/kratos
+
+# Windows (CMD)
+go env -w GO111MODULE=on && go get -u github.com/go-kratos/kratos/tool/kratos
+
 cd $GOPATH/src
 kratos new kratos-demo
 ```
@@ -50,16 +59,18 @@ go build
 
 打开浏览器访问：[http://localhost:8000/kratos-demo/start](http://localhost:8000/kratos-demo/start)，你会看到输出了`Golang 大法好 ！！！`
 
-[快速开始](doc/wiki-cn/quickstart.md)  [kratos工具](doc/wiki-cn/kratos-tool.md)
+[快速开始](https://go-kratos.github.io/kratos/#/quickstart)  [kratos工具](https://go-kratos.github.io/kratos/#/kratos-tool)
 
 ## Documentation
 
-> [简体中文](doc/wiki-cn/summary.md)  
-> [FAQ](doc/wiki-cn/FAQ.md)  
+> [简体中文](https://go-kratos.github.io/kratos)  
+> [简体中文（国内镜像）](https://go-kratos.gitee.io/kratos/)  
+> [FAQ](https://go-kratos.github.io/kratos/#/FAQ)  
 
 ## License
 Kratos is under the MIT license. See the [LICENSE](./LICENSE) file for details.
 
 -------------
 
-*Please report bugs, concerns, suggestions by issues, or join QQ-group 716486124 to discuss problems around source code.*
+*Please report bugs, concerns, suggestions by issues, on [Discord Group](https://discord.gg/BWzJsUJ)
+ or join QQ-group 716486124 to discuss problems around source code.*
