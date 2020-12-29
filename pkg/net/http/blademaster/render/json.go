@@ -16,6 +16,7 @@ type JSON struct {
 	Message    string      `json:"error_msg"`
 	ServerTime int64       `json:"server_time"`
 	RequestID  string      `json:"request_id"`
+	TraceID    string      `json:"trace_id"`
 	Data       interface{} `json:"data,omitempty"`
 }
 

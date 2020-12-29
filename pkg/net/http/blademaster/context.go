@@ -2,6 +2,7 @@ package blademaster
 
 import (
 	"context"
+	"github.com/go-kratos/kratos/pkg/net/trace"
 	"math"
 	"net/http"
 	"strconv"
@@ -253,10 +254,12 @@ func (c *Context) JSON(data interface{}, err error) {
 	}
 	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
 	requestID := metadata.String(c, metadata.RequestID)
+	traceID := c.Writer.Header().Get(trace.KratosTraceID)
 	c.Render(code, render.JSON{
 		Code:      bcode.Code(),
 		Message:   message,
 		RequestID: requestID,
+		TraceID:   traceID,
 		Data:      data,
 	})
 }
@@ -266,10 +269,12 @@ func (c *Context) JSONStatus(data interface{}, err error, code int) {
 	bcode := ecode.Cause(err)
 	writeStatusCode(c.Writer, metadata.String(c, metadata.RequestID), bcode.Code())
 	requestID := metadata.String(c, metadata.RequestID)
+	traceID := c.Writer.Header().Get(trace.KratosTraceID)
 	c.Render(code, render.JSON{
 		Code:      bcode.Code(),
 		Message:   bcode.Message(),
 		RequestID: requestID,
+		TraceID:   traceID,
 		Data:      data,
 	})
 }
