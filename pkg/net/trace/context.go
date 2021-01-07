@@ -83,7 +83,12 @@ func contextFromString(value string) (spanContext, error) {
 	}
 	items := strings.Split(value, ":")
 	if len(items) < 4 {
-		return emptyContext, errInvalidTracerString
+		items = []string{
+			value,
+			"0",
+			"0",
+			"0",
+		}
 	}
 	parseHexUint64 := func(hexs []string) ([]uint64, error) {
 		rets := make([]uint64, len(hexs))
