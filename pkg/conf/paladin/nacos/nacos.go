@@ -39,7 +39,7 @@ func init() {
 	flag.StringVar(&nacosCacheDir, "nacos.cachedir", os.Getenv("NACOS_CACHEDIR"), "nacos cache directory")
 	flag.StringVar(&nacosServer, "nacos.servers", os.Getenv("NACOS_SERVERS"), "nacos servers")
 	flag.StringVar(&nacosNamespace, "nacos.namespace", os.Getenv("NACOS_NAMESPACE"), "nacos namespace")
-	flag.BoolVar(&nacosNotLoadCacheAtStart, "nacos.nocache", true, "nacos not load cache at start,default : true")
+	flag.BoolVar(&nacosNotLoadCacheAtStart, "nacos.nocache", false, "nacos not load cache at start,default : false")
 	flag.Uint64Var(&nacosTimeoutMs, "nacos.timeout", 5000, "nacos timeout , default 5000 ms")
 	flag.StringVar(&nacosLogLevel, "nacos.loglevel", defaultString("NACOS_LOGLEVEL", "info"), "the level of log, it's must be debug,info,warn,error, default info")
 }
