@@ -672,5 +672,7 @@ func slowLog(statement string, now time.Time) {
 	du := time.Since(now)
 	if du > _slowLogDuration {
 		log.Warn("%s slow log statement: %s time: %v", _family, statement, du)
+	} else {
+		log.Debug("%s sql log statement %s", statement)
 	}
 }
