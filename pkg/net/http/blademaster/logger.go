@@ -55,6 +55,7 @@ func Logger() HandlerFunc {
 			}
 		}
 		lf(c,
+			log.KV("header",req.Header),
 			log.KVString("method", req.Method),
 			log.KVString("ip", c.RemoteIP()),
 			log.KVString("user", caller),
