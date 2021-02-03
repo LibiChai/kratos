@@ -13,7 +13,7 @@ import (
 	xtime "github.com/go-kratos/kratos/pkg/time"
 )
 
-var _traceDSN = "unixgram:///var/run/dapper-collect/dapper-collect.sock"
+var _traceDSN = "noopReport"
 
 func init() {
 	if v := os.Getenv("TRACE"); v != "" {
@@ -63,13 +63,19 @@ func TracerFromEnvFlag() (Tracer, error) {
 
 // Init init trace report.
 func Init(cfg *Config) {
-	if cfg == nil {
+	if cfg == nil && _traceDSN != "noopReport" {
 		// paser config from env
 		var err error
 		if cfg, err = parseDSN(_traceDSN); err != nil {
 			panic(fmt.Errorf("parse trace dsn error: %s", err))
 		}
 	}
-	report := newReport(cfg.Network, cfg.Addr, time.Duration(cfg.Timeout), cfg.ProtocolVersion)
+	var report reporter
+	if cfg != nil {
+		report = newReport(cfg.Network, cfg.Addr, time.Duration(cfg.Timeout), cfg.ProtocolVersion)
+	} else {
+		cfg = &Config{}
+		report = &noopReport{}
+	}
 	SetGlobalTracer(NewTracer(env.AppID, report, cfg.DisableSample))
 }
