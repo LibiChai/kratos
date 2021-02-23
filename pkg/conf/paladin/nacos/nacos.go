@@ -21,6 +21,7 @@ import (
 const (
 	PaladinDriverNacos = "nacos"
 	defaultChSize      = 10
+	acmDsnPrefix       = "acm://"
 )
 
 var (
@@ -89,6 +90,19 @@ func buildNacosConfig() (*constant.ClientConfig, []constant.ServerConfig, error)
 		LogLevel:            nacosLogLevel,
 	}
 
+	if strings.HasPrefix(nacosServer, acmDsnPrefix) {
+		u, err := url.Parse(nacosServer)
+		if err != nil {
+			return nil, nil, errors.New("nacos servers parse error ")
+		}
+
+		clientConfig.Endpoint = u.Host
+		clientConfig.AccessKey = u.User.Username()
+		clientConfig.SecretKey, _ = u.User.Password()
+		clientConfig.RegionId = strings.TrimLeft(u.Path, "/")
+		return clientConfig, nil, nil
+	}
+
 	servers := strings.Split(nacosServer, ",")
 	serverConfigs := make([]constant.ServerConfig, 0)
 	for _, server := range servers {
@@ -112,12 +126,18 @@ func buildNacosConfig() (*constant.ClientConfig, []constant.ServerConfig, error)
 }
 
 func (nd *nacosDriver) new(clientConfig *constant.ClientConfig, serverConfigs []constant.ServerConfig) (paladin.Client, error) {
-	client, err := clients.NewConfigClient(
-		vo.NacosClientParam{
+	var clientParam vo.NacosClientParam
+	if serverConfigs == nil {
+		clientParam = vo.NacosClientParam{
+			ClientConfig: clientConfig,
+		}
+	} else {
+		clientParam = vo.NacosClientParam{
 			ClientConfig:  clientConfig,
 			ServerConfigs: serverConfigs,
-		},
-	)
+		}
+	}
+	client, err := clients.NewConfigClient(clientParam)
 	if err != nil {
 		return nil, err
 	}
